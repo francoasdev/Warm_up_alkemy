@@ -40,45 +40,61 @@ module Api
 
             # Returns a single post associated with that id
             def show
-                post = Post.find(params[:id])
+                begin
+                    post = Post.find(params[:id])
+                rescue => e
+                    render json: { message: 'Post not found' }, status: :not_found
+                else
                 render json: {
                     status: 'Success',
                     message: 'Loaded post',
                     data: post,
                     },
                     status: :ok
+                end
             end
 
             # Update a post associted with that id in the database
             def update
-                post = Post.find(params[:id])
-                if post.update_attributes(post_params)
-                    render json: {
-                        status: 'Success',
-                        message: 'Post updated',
-                        data: post
-                        },
-                        status: :ok
-                else 
-                    render json: {
-                        status: 'Success',
-                        message: 'Post not updated',
-                        data: post,
-                        },
-                        status: :unprocessable_entity
+                begin
+                    post = Post.find(params[:id])
+                rescue => exception
+                   render json: { message: 'Post not found' }, status: :not_found
+                else
+                    if post.update(post_params)
+                        render json: {
+                            status: 'Success',
+                            message: 'Post updated',
+                            data: post
+                            },
+                            status: :ok
+                    else 
+                        render json: {
+                            status: 'Success',
+                            message: 'Post not updated',
+                            data: post,
+                            },
+                            status: :unprocessable_entity
+                    end
                 end
             end
 
             # Delete a post from the database
             def destroy
-                post = Post.find(params[:id])
-                post.destroy
-                render json: {
-                    status: 'Success',
-                    message: 'Post deleted',
-                    data: post,
-                    },
-                    status: :ok
+                begin
+                    post = Post.find(params[:id])
+                rescue => exception
+                   render json: { message: 'Post not found' }, status: :not_found 
+                else
+                    post.destroy
+                    render json: {
+                        status: 'Success',
+                        message: 'Post deleted',
+                        data: post,
+                        },
+                        status: :ok
+                end
+                
             end
 
             private 
