@@ -97,6 +97,16 @@ module Api
                 
             end
 
+            #show only deleted posts
+            def only_deleted
+                posts = Post.only_deleted
+                render json: {
+                    data: posts
+                },
+                status: :ok
+                
+            end
+
             private 
             def post_params
                 params.permit(:title, :content, :image, :category, :user_id)
