@@ -58,8 +58,11 @@ categoría y fecha de creación.
 Se deberá poder filtrar por título y/o categoría.
 
 /posts?title=TITULO
+
 /posts?category=CATEGORIA
+
 /posts?titulo=TITULO&category=CATEGORY
+
 GET /posts/:id
 
 Deberá buscar un post cuyo id sea el especificado en el parámetro :id. Si existe, devolver
